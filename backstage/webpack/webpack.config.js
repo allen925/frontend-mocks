@@ -62,7 +62,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './front/index.html',
             filename: 'index.html',
-            chunks: ['index', 'rows']
+            chunks: ['index']
         }),
         new MiniCssExtractPlugin({
             filename: 'css/min/[name].min.css'
