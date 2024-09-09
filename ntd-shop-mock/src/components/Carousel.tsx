@@ -21,13 +21,16 @@ const slides: SlideProps[] = [
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState('next'); // Track the animation direction
 
   const goToNext = () => {
-    setCurrentIndex(prevIndex => prevIndex === slides.length - 1 ? 0 : prevIndex + 1);
+    setDirection('next');
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
   };
 
   const goToPrev = () => {
-    setCurrentIndex(prevIndex => prevIndex === 0 ? slides.length - 1 : prevIndex - 1);
+    setDirection('prev');
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
   };
 
   const goToSlide = (index: number) => {
@@ -36,17 +39,28 @@ const Carousel = () => {
 
   return (
     <div className="carousel-container">
-      <div className='main-section'>
+      <div className="main-section">
         <div className="slide-show">
           {slides.map((slide, index) => (
-            <div key={index} className={`slide ${index === currentIndex ? 'active' : ''}`}>
+            <div
+              key={slide.image}
+              className={`slide ${
+                index === currentIndex ? 'active' : index === (currentIndex - 1 + slides.length) % slides.length && direction === 'next' ? 'exit' : ''
+              }`}
+            >
               <img src={slide.image} alt={slide.title} />
             </div>
           ))}
         </div>
-        <div className='btn'>
-          <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={goToPrev} />
-          <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={goToNext} />
+        <div className='btn--leftCenter'>
+          <div className='btn--leftCenter--center'>
+            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={goToPrev} />
+          </div>
+        </div>
+        <div className='btn--rightCenter'>
+          <div className='btn--rightCenter--center'>
+            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={goToNext} />
+          </div>
         </div>
       </div>
       {/* <div className="thumbnails">

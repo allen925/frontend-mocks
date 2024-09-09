@@ -1,15 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
 .carousel-container {
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   object-fit: cover;
-  max-width: 1000px;
 
   .main-section {
+    position: absolute;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
     .slide-show {
       .slide {
+        max-width: 1000px;
+        // max-height: 500px;
         display: none;
 
         &.active {
@@ -17,48 +26,72 @@
         }
 
         img {
+          position: relative;
+          z-index: 1;
           width: 100%;
           object-fit: cover;
         }
       }
     }
 
-    .btn {
-      .icon {
-        background-color: transparent;
-        color: #ffffff;
-        position: absolute;
-        top: calc(50% - 2rem);
-        padding: 2rem;
-        font-size: 3rem;
+    .btn--leftCenter,
+    .btn--rightCenter {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 5;
+      pointer-events: none; 
 
+      .btn--leftCenter--center,
+      .btn--rightCenter--center {
         cursor: pointer;
+      }
+    }
 
-        &.next {
-          right: 1px;
-        }        
-        &.prev {
-          left: 1px;
-        }
+    .btn--leftCenter {
+      justify-content: flex-start;
+    }
+
+    .btn--rightCenter {
+      justify-content: flex-end;
+    }
+
+    .icon {
+      color: white;
+      padding: 2rem;
+      font-size: 3rem;
+      transition: transform 0.3s ease;
+      pointer-events: auto; 
+
+      &:hover {
+        transform: scale(1.30);
+
       }
     }
   }
 
-  // .thumbnails {
-  //   width: 100%;
-  //   display: flex;
-  //   justify-content: center;
-
-  //   .thumbnail {
-  //     width: 60px;
-  //     cursor: pointer;
-  //     opacity: 0.6;
-  //     transition: opacity 0.3s ease;
-
-  //     &:hover, &.active {
-  //       opacity: 1;
-  //       transform: scale(1.1);
-  //     }
-  //   }
-  // }
 }
+
+
+
+// .thumbnails {
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+
+//   .thumbnail {
+//     width: 60px;
+//     cursor: pointer;
+//     opacity: 0.6;
+//     transition: opacity 0.3s ease;
+
+//     &:hover, &.active {
+//       opacity: 1;
+//       transform: scale(1.1);
+//     }
+//   }
+// }
