@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/main.scss';
@@ -21,33 +21,21 @@ const slides: SlideProps[] = [
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState('next'); // Track the animation direction
 
   const goToNext = () => {
-    setDirection('next');
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    setCurrentIndex(prevIndex => prevIndex === slides.length - 1 ? 0 : prevIndex + 1);
   };
+  const translateX = currentIndex * -(1/7 *100); // Calculate the translateX percentage
 
   const goToPrev = () => {
-    setDirection('prev');
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
+    setCurrentIndex(prevIndex => prevIndex === 0 ? slides.length - 1 : prevIndex - 1);
   };
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   return (
     <div className="carousel-container">
-      <div className="main-section">
-        <div className="slide-show">
+      <div className='main-section'>
+        <div className="slide-show" style={{ transform: `translateX(${translateX}%)` }}>
           {slides.map((slide, index) => (
-            <div
-              key={slide.image}
-              className={`slide ${
-                index === currentIndex ? 'active' : index === (currentIndex - 1 + slides.length) % slides.length && direction === 'next' ? 'exit' : ''
-              }`}
-            >
+            <div key={index} className={`slide ${index === currentIndex ? 'active' : ''}`}>
               <img src={slide.image} alt={slide.title} />
             </div>
           ))}
