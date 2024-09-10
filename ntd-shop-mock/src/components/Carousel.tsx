@@ -21,33 +21,47 @@ const slides: SlideProps[] = [
 
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
 
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => prevIndex === slides.length - 1 ? 0 : prevIndex + 1);
-  };
-  const translateX = currentIndex * -(1/7 *100); // Calculate the translateX percentage
+  const navigateSlides = (delta: number) => {
+    setAnimating(true);
 
-  const goToPrev = () => {
-    setCurrentIndex(prevIndex => prevIndex === 0 ? slides.length - 1 : prevIndex - 1);
+    setCurrentIndex(prevIndex => {
+      const newIndex = (prevIndex + delta + slides.length) % slides.length;
+      return newIndex;
+    });
+
+    // comment out shrinking delay
+    // setTimeout(() => {
+    setTimeout(() => {
+      setAnimating(false);
+    }, 300);
+    // }, 200);
   };
+
   return (
     <div className="carousel-container">
       <div className='main-section'>
-        <div className="slide-show" style={{ transform: `translateX(${translateX}%)` }}>
+        <div className="slide-show" style={{
+          transform: `translateX(-${currentIndex * (100 / slides.length)}%) `,
+        }}>
           {slides.map((slide, index) => (
-            <div key={index} className={`slide ${index === currentIndex ? 'active' : ''}`}>
+            <div style={{
+              transform: `scale(${animating ? 0.85 : 1})`,
+            }
+            } key={index} className={`slide`}>
               <img src={slide.image} alt={slide.title} />
             </div>
           ))}
         </div>
         <div className='btn--leftCenter'>
           <div className='btn--leftCenter--center'>
-            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={goToPrev} />
+            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => navigateSlides(-1)} />
           </div>
         </div>
         <div className='btn--rightCenter'>
           <div className='btn--rightCenter--center'>
-            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={goToNext} />
+            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => navigateSlides(1)} />
           </div>
         </div>
       </div>
