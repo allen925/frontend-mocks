@@ -25,29 +25,37 @@ const Carousel = () => {
   const [animating, setAnimating] = useState(false);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
 
-  useEffect(() => {
-    if (currentIndex === 0 || currentIndex === slides.length - 1) {
-      const timeoutId = setTimeout(() => {
-        setTransitionEnabled(false);
-        setCurrentIndex(currentIndex === 0 ? slides.length - 2 : 1);
-        setTimeout(() => {
-          setTransitionEnabled(true);
-        }, 50); 
-      }, 300);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [currentIndex]);
-
   const navigateSlides = (delta: number) => {
-    setAnimating(true);
-    setCurrentIndex(prevIndex => (prevIndex + delta + slides.length) % slides.length);
+    let newIndex = (currentIndex + delta + slides.length) % slides.length;
+    const isBufferJump = newIndex === 0 || newIndex === slides.length - 1;
 
-    // comment out shrinking delay
-    // setTimeout(() => {
-    setTimeout(() => {
-      setAnimating(false);
-    }, 300);
-    // }, 200);
+    if (isBufferJump) {
+      // Handle instant jump to buffer
+      setTransitionEnabled(false);
+      if (newIndex === 0){
+        setCurrentIndex(slides.length - 1);
+        newIndex = slides.length - 2;
+      } else {
+        setCurrentIndex(0);
+        newIndex = 1;
+      }
+      setTimeout(() => {
+        setTransitionEnabled(true); 
+        setAnimating(true); 
+        setCurrentIndex(newIndex);
+        setTimeout(() => {
+          setAnimating(false); 
+        }, 300);
+      }, 0); 
+
+    } else {
+      // Normal navigation with animation
+      setAnimating(true); 
+      setCurrentIndex(newIndex);
+      setTimeout(() => {
+        setAnimating(false); 
+      }, 300);
+    }
   };
 
   return (
