@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/main.scss';
@@ -21,57 +21,132 @@ const originalSlides: SlideProps[] = [
 const slides = [originalSlides[originalSlides.length - 1], ...originalSlides, originalSlides[0]];
 
 const Carousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [enlarge, setEnlarge] = useState(true);
+  const [shiftWithAnim, setShiftWithAmin] = useState(true);
 
   const navigateSlides = (delta: number) => {
     let newIndex = (currentIndex + delta + slides.length) % slides.length;
     const isBufferJump = newIndex === 0 || newIndex === slides.length - 1;
 
     if (isBufferJump) {
-      // Handle instant jump to buffer
-      setTransitionEnabled(false);
-      if (newIndex === 0){
+      // Handle instant jump to clone
+      setShiftWithAmin(false);
+
+      if (newIndex === 0) {
         setCurrentIndex(slides.length - 1);
         newIndex = slides.length - 2;
       } else {
         setCurrentIndex(0);
         newIndex = 1;
       }
-      setTimeout(() => {
-        setTransitionEnabled(true); 
-        setAnimating(true); 
-        setCurrentIndex(newIndex);
-        setTimeout(() => {
-          setAnimating(false); 
-        }, 300);
-      }, 0); 
 
-    } else {
-      // Normal navigation with animation
-      setAnimating(true); 
-      setCurrentIndex(newIndex);
       setTimeout(() => {
-        setAnimating(false); 
-      }, 300);
+        setShiftWithAmin(true);
+        doJump(newIndex);
+      }, 0);
+    } else {
+      doJump(newIndex);
     }
   };
+
+  const doJump = (newIndex: number) => {
+    setEnlarge(false);
+    setCurrentIndex(newIndex);
+    setTimeout(() => {
+      setEnlarge(true);
+    }, 300);
+  }
+
+  //////// Mobile ////////
+  const [startX, setStartX] = useState<number | null>(null);
+  const [currentTranslate, setCurrentTranslate] = useState<number>(-100 / slides.length);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setStartX(e.touches[0].clientX);
+    // setCurrentTranslate(-(currentIndex * (100 / slides.length)));
+    setCurrentTranslate(currentTranslate);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (startX !== null) { // Ensure startX is not null
+      const touchX = e.touches[0].clientX;
+      const movePercentage = (touchX - startX) / window.innerWidth * 100; // Convert movement to percentage of the screen width
+      setCurrentTranslate(-(currentIndex * (100 / slides.length)) + movePercentage);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (startX !== null && currentTranslate !== null) {
+      const endTranslate = currentTranslate;
+      let newIndex = calculateStep(endTranslate, slides.length)
+      if (newIndex !== currentIndex) {
+        doJump(newIndex);
+        setCurrentTranslate(-((newIndex) * (100 / slides.length)));
+
+
+        if (newIndex === 0 || newIndex === slides.length - 1) {
+          // wait for translateX 300ms and 
+          setTimeout(() => {
+            // start switching without notice
+            console.log("after", newIndex)
+            setShiftWithAmin(false);
+            setEnlarge(false);
+
+            newIndex = newIndex === 0 ? slides.length - 2 : 1
+            setCurrentTranslate(-((newIndex) * (100 / slides.length)));
+            setTimeout(() => {
+              setCurrentIndex(newIndex);
+              setTimeout(() => {
+                setShiftWithAmin(true);
+                setEnlarge(true);
+              }, 10);
+            }, 0);
+          }, 300);
+        } else {
+          
+        }
+      } else {
+        setCurrentTranslate(-(currentIndex * (100 / slides.length)));
+      }
+    }
+  };
+
+  function calculateStep(value: number, numSlides: number): number {
+    const normalizedValue = value / 100 - 1 / (2 * numSlides);
+
+    const index = Math.floor(Math.abs(normalizedValue * numSlides));
+    console.log(index)
+    return index;
+  }
+
+  const isTouchDevice = (() => {
+    try {
+      document.createEvent('TouchEvent');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
+  const slideShowStyle = isTouchDevice
+    ? { transform: `translateX(${currentTranslate}%)` }
+    : { transform: `translateX(-${currentIndex * (100 / slides.length)}%) ` };
 
   return (
     <div className="carousel-container">
       <div className='main-section'>
-        <div className="slide-show" style={{
-          transform: `translateX(-${currentIndex * (100 / slides.length)}%) `,
-          width: `${100 * (slides.length)}%`,
-          transition: transitionEnabled ? 'transform 0.3s ease' : 'none'
-        }}>
+        <div className="slide-show"
+          onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
+          style={{
+            ...slideShowStyle,
+            width: `${100 * (slides.length)}%`,
+            transition: shiftWithAnim ? 'transform 0.3s ease' : 'none'
+          }}>
           {slides.map((slide, index) => (
             <div style={{
-              transform: `scale(${animating ? 0.85 : 1})`,
+              transform: `scale(${enlarge && index == currentIndex ? 1 : .85})`,
               flex: `0 0 ${100 / (slides.length)}%`
-            }
-            } key={index} className={`slide`}>
+            }} key={index} className={`slide`}>
               <img src={slide.image} alt={slide.title} />
             </div>
           ))}
@@ -88,12 +163,20 @@ const Carousel = () => {
         </div>
       </div>
       {/* <div className="thumbnails">
-        {slides.map((slide, index) => (
-          <img key={index} className={`thumbnail ${index === currentIndex ? 'active' : ''}`} src={slide.image} alt={slide.title} onClick={() => goToSlide(index)} />
+        {originalSlides.map((slide, index) => (
+          <img style={{
+            // maxWidth: `calc((100% / 7) - 2rem)` // This accounts for 1rem margin on each side
+          }} key={index} className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`} src={slide.image} alt={slide.title} onClick={() => doJump(index + 1)} />
         ))}
-        <div>
-          <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={goToPrev} />
-          <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={goToNext} />
+        <div className='btn--leftCenter'>
+          <div className='btn--leftCenter--center'>
+            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => navigateSlides(-1)} />
+          </div>
+        </div>
+        <div className='btn--rightCenter'>
+          <div className='btn--rightCenter--center'>
+            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => navigateSlides(1)} />
+          </div>
         </div>
       </div> */}
     </div>
