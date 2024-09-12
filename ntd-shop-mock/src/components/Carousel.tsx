@@ -62,7 +62,7 @@ const Carousel = () => {
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (startX !== null) {
       const touchX = e.touches[0].clientX;
-      const movePercentage = (touchX - startX) / window.innerWidth * 100 / 5; 
+      const movePercentage = (touchX - startX) / window.innerWidth * 100 / 5;
       setCurrentTranslate(-(currentIndex * (100 / slides.length)) + movePercentage);
     }
   };
@@ -123,6 +123,18 @@ const Carousel = () => {
     ? { transform: `translateX(${currentTranslate}%)` }
     : { transform: `translateX(-${currentIndex * (100 / slides.length)}%) ` };
 
+  //////// thumbnail /////////
+  const thumbnailWidth = 10;
+  const thumbnailGap = 2;
+  // (Oslides num * size + gap)rem
+  const thumbnailsSize = 16 * (originalSlides.length * thumbnailWidth + (originalSlides.length - 1) * thumbnailGap);
+  const [thumbnailFlexEnd, setThumbnailFlexEnd] = useState<boolean>(false);
+
+  const thumbnailStyle = thumbnailFlexEnd
+    // 100vw - thumbnails width (since moving negative direction)
+    ? { transform: `translateX(${window.innerWidth - thumbnailsSize}px)` }
+    : { transform: `translateX(0)` };
+
   return (
     <div className="carousel-container">
       <div className='main-section'>
@@ -157,22 +169,47 @@ const Carousel = () => {
           </>
         }
       </div>
-      <div className="thumbnails">
+      <div className="thumbnails" style={{ gap: `${thumbnailGap}rem` }}>
         {originalSlides.map((slide, index) => (
           <img style={{
-            // maxWidth: `calc((100% / 7) - 2rem)` // This accounts for 1rem margin on each side
-          }} key={index} className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`} src={slide.image} alt={slide.title} onClick={() => doJump(index + 1)} />
+            ...thumbnailStyle,
+            maxWidth: `${thumbnailWidth}rem`,
+            transition: `transform 0.3s ease`,
+          }} key={index} className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`} src={slide.image} alt={slide.title} onClick={(e) => {
+            if (currentIndex !== index + 1)
+              doJump(index + 1);
+
+            // auto shift thumbnail tab if needed. *a
+            const target = e.target as HTMLElement;
+            const threshold = 0.65;
+            // clicked image's X-axis mid point / screen width
+            const clickedFirstMiddle = (target.offsetLeft + 0.5 * thumbnailWidth * 16) / window.innerWidth;
+            // Backward, like 2 <- 1 <- 0.           ((thumbnails width - (clicked img middle point)) / screen width
+            const clickedFirstMiddleFromEnd = (thumbnailsSize - (16 * 0.5 * thumbnailWidth + target.offsetLeft)) / window.innerWidth;
+            if (!thumbnailFlexEnd && clickedFirstMiddle > threshold) {
+              setThumbnailFlexEnd(true)
+            } else if (thumbnailFlexEnd && clickedFirstMiddleFromEnd > threshold) {
+              setThumbnailFlexEnd(false)
+            }
+          }} />
         ))}
-        <div className='btn--leftCenter'>
-          <div className='btn--leftCenter--center'>
-            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => computerNavigateSlides(-1)} />
+        {thumbnailFlexEnd ?
+          <div className='btn--leftCenter'>
+            <div className='btn--leftCenter--center'>
+              <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => {
+                setThumbnailFlexEnd(false)
+              }} />
+            </div>
           </div>
-        </div>
-        <div className='btn--rightCenter'>
-          <div className='btn--rightCenter--center'>
-            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => computerNavigateSlides(1)} />
+          :
+          <div className='btn--rightCenter'>
+            <div className='btn--rightCenter--center'>
+              <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => {
+                setThumbnailFlexEnd(true)
+              }} />
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   );
