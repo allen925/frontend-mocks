@@ -38,6 +38,11 @@
         }
       }
     }
+
+    .btn--leftCenter,
+    .btn--rightCenter {
+      margin: 3rem;
+    }
   }
 
   .btn--leftCenter,
@@ -51,7 +56,6 @@
     left: 0;
     z-index: 5;
     pointer-events: none;
-    margin: 3rem;
 
     .btn--leftCenter--center,
     .btn--rightCenter--center {
@@ -81,56 +85,56 @@
   }
 }
 
-// .thumbnails {
-//   width: 100%;
-//   display: flex;
-//   justify-content: flex-end;
-//   /* Aligns items to the start of the container */
-//   object-fit: cover;
-//   overflow: hidden;
-//   position: relative;
-//   background-color: white;
-//   gap: 1rem;
+.thumbnails {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  /* Aligns items to the start of the container */
+  object-fit: cover;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+  gap: 1rem;
 
-//   .thumbnail {
-//     cursor: pointer;
-//     filter: brightness(50%);
-//     transition: filter 0.3s ease;
-//     max-width: 13rem;
+  .thumbnail {
+    cursor: pointer;
+    filter: brightness(50%);
+    transition: filter 0.3s ease;
+    max-width: 13rem;
 
-//     border-radius: 1.5rem;
-//     // max-width: calc((100% / 7) - (1rem * 6 / 7));  // Adjust the width by subtracting the total gaps divided by number of thumbnails
+    border-radius: 1.5rem;
+    // max-width: calc((100% / 7) - (1rem * 6 / 7));  // Adjust the width by subtracting the total gaps divided by number of thumbnails
 
-//     &:hover {
-//       z-index: 2;
-//       transform: scale(1.1);
-//       filter: brightness(100%);
-//       border-bottom: 0.3rem solid red;
-//     }
+    &:hover {
+      z-index: 2;
+      transform: scale(1.1);
+      filter: brightness(100%);
+      border-bottom: 0.3rem solid red;
+    }
 
-//     &.active {
-//       z-index: 0;
-//       transform: scale(1);
-//       filter: brightness(100%);
-//       border-bottom: 0.5rem solid red;
-//     }
-//   }
+    &.active {
+      z-index: 0;
+      transform: scale(1);
+      filter: brightness(100%);
+      border-bottom: 0.5rem solid red;
+    }
+  }
 
-//   .btn--leftCenter--center,
-//   .btn--rightCenter--center {
-//     background-color: rgba(0, 0, 0, 0.5);
-//     // display: none;
+  .btn--leftCenter--center,
+  .btn--rightCenter--center {
+    background-color: rgba(0, 0, 0, 0.5);
+    // display: none;
 
-//     &:hover {
-//       background-color: rgba(0, 0, 0, 0.75);
-//     }
-//   }
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+  }
 
-//   .icon {
-//     border-radius: 1.5rem;
-//   }
+  .icon {
+    border-radius: 1.5rem;
+  }
 
-//   img {
-//     user-select: none;
-//   }
-// }
+  img {
+    user-select: none;
+  }
+}

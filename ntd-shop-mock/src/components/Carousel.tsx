@@ -11,10 +11,10 @@ interface SlideProps {
 
 const originalSlides: SlideProps[] = [
   { image: "/src/assets/image0.avif", title: "Image 0" },
-  // { image: "/src/assets/image1.avif", title: "Image 1" },
-  // { image: "/src/assets/image2.avif", title: "Image 2" },
-  // { image: "/src/assets/image3.avif", title: "Image 3" },
-  // { image: "/src/assets/image4.avif", title: "Image 4" },
+  { image: "/src/assets/image1.avif", title: "Image 1" },
+  { image: "/src/assets/image2.avif", title: "Image 2" },
+  { image: "/src/assets/image3.avif", title: "Image 3" },
+  { image: "/src/assets/image4.avif", title: "Image 4" },
   { image: "/src/assets/image5.avif", title: "Image 5" },
   { image: "/src/assets/image6.avif", title: "Image 6" }
 ];
@@ -25,7 +25,8 @@ const Carousel = () => {
   const [enlarge, setEnlarge] = useState(true);
   const [shiftWithAnim, setShiftWithAmin] = useState(true);
 
-  const navigateSlides = (delta: number) => {
+  //////// PC icon "<" ">" navigate /////////
+  const computerNavigateSlides = (delta: number) => {
     let newIndex = (currentIndex + delta + slides.length) % slides.length;
     const isBufferJump = newIndex === 0 || newIndex === slides.length - 1;
 
@@ -50,61 +51,42 @@ const Carousel = () => {
     }
   };
 
-  const doJump = (newIndex: number) => {
-    setEnlarge(false);
-    setCurrentIndex(newIndex);
-    setTimeout(() => {
-      setEnlarge(true);
-    }, 300);
-  }
-
   //////// Mobile ////////
   const [startX, setStartX] = useState<number | null>(null);
   const [currentTranslate, setCurrentTranslate] = useState<number>(-100 / slides.length);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setStartX(e.touches[0].clientX);
-    // setCurrentTranslate(-(currentIndex * (100 / slides.length)));
-    setCurrentTranslate(currentTranslate);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (startX !== null) { // Ensure startX is not null
+    if (startX !== null) {
       const touchX = e.touches[0].clientX;
-      const movePercentage = (touchX - startX) / window.innerWidth * 100; // Convert movement to percentage of the screen width
+      const movePercentage = (touchX - startX) / window.innerWidth * 100 / 5; 
       setCurrentTranslate(-(currentIndex * (100 / slides.length)) + movePercentage);
     }
   };
 
   const handleTouchEnd = () => {
-    if (startX !== null && currentTranslate !== null) {
-      const endTranslate = currentTranslate;
-      let newIndex = calculateStep(endTranslate, slides.length)
+    if (currentTranslate !== -(100 * currentIndex) / slides.length) {
+      let newIndex = calcIndex(currentTranslate, slides.length)
       if (newIndex !== currentIndex) {
-        doJump(newIndex);
+        doJump(newIndex)
         setCurrentTranslate(-((newIndex) * (100 / slides.length)));
 
-
         if (newIndex === 0 || newIndex === slides.length - 1) {
-          // wait for translateX 300ms and 
+          // wait for translateX 300ms
           setTimeout(() => {
             // start switching without notice
-            console.log("after", newIndex)
             setShiftWithAmin(false);
-            setEnlarge(false);
 
             newIndex = newIndex === 0 ? slides.length - 2 : 1
             setCurrentTranslate(-((newIndex) * (100 / slides.length)));
+            setCurrentIndex(newIndex);
             setTimeout(() => {
-              setCurrentIndex(newIndex);
-              setTimeout(() => {
-                setShiftWithAmin(true);
-                setEnlarge(true);
-              }, 10);
-            }, 0);
+              setShiftWithAmin(true);
+            }, 30);
           }, 300);
-        } else {
-          
         }
       } else {
         setCurrentTranslate(-(currentIndex * (100 / slides.length)));
@@ -112,11 +94,19 @@ const Carousel = () => {
     }
   };
 
-  function calculateStep(value: number, numSlides: number): number {
-    const normalizedValue = value / 100 - 1 / (2 * numSlides);
+  ////// helpers ///////
+  const doJump = (newIndex: number) => {
+    setEnlarge(false);
+    setCurrentIndex(newIndex);
+    setCurrentTranslate(-((newIndex) * (100 / slides.length)));
+    setTimeout(() => {
+      setEnlarge(true);
+    }, 300);
+  }
 
+  function calcIndex(value: number, numSlides: number): number {
+    const normalizedValue = value / 100 - 1 / (2 * numSlides);
     const index = Math.floor(Math.abs(normalizedValue * numSlides));
-    console.log(index)
     return index;
   }
 
@@ -124,10 +114,11 @@ const Carousel = () => {
     try {
       document.createEvent('TouchEvent');
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   })();
+
   const slideShowStyle = isTouchDevice
     ? { transform: `translateX(${currentTranslate}%)` }
     : { transform: `translateX(-${currentIndex * (100 / slides.length)}%) ` };
@@ -151,18 +142,22 @@ const Carousel = () => {
             </div>
           ))}
         </div>
-        <div className='btn--leftCenter'>
-          <div className='btn--leftCenter--center'>
-            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => navigateSlides(-1)} />
-          </div>
-        </div>
-        <div className='btn--rightCenter'>
-          <div className='btn--rightCenter--center'>
-            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => navigateSlides(1)} />
-          </div>
-        </div>
+        {isTouchDevice ? '' :
+          <>
+            <div className='btn--leftCenter'>
+              <div className='btn--leftCenter--center'>
+                <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => computerNavigateSlides(-1)} />
+              </div>
+            </div>
+            <div className='btn--rightCenter'>
+              <div className='btn--rightCenter--center'>
+                <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => computerNavigateSlides(1)} />
+              </div>
+            </div>
+          </>
+        }
       </div>
-      {/* <div className="thumbnails">
+      <div className="thumbnails">
         {originalSlides.map((slide, index) => (
           <img style={{
             // maxWidth: `calc((100% / 7) - 2rem)` // This accounts for 1rem margin on each side
@@ -170,15 +165,15 @@ const Carousel = () => {
         ))}
         <div className='btn--leftCenter'>
           <div className='btn--leftCenter--center'>
-            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => navigateSlides(-1)} />
+            <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => computerNavigateSlides(-1)} />
           </div>
         </div>
         <div className='btn--rightCenter'>
           <div className='btn--rightCenter--center'>
-            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => navigateSlides(1)} />
+            <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => computerNavigateSlides(1)} />
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
