@@ -22,12 +22,9 @@
     .slide-show {
       display: flex;
       position: relative;
-      // width: calc(100% * 9);
       height: 100%;
-      // transition: transform 0.3s ease;
 
       .slide {
-        // flex: 0 0 calc(100% / 9);
         transition: transform 0.2s ease;
 
         img {
@@ -83,71 +80,71 @@
       transform: scale(1.30);
     }
   }
-}
 
-.thumbnails {
-  display: flex;
-  justify-content: flex-start;
-  /* Aligns items to the start of the container */
-  object-fit: cover;
-  overflow: hidden;
-  position: relative;
-  background-color: white;
+  .thumbnails {
+    display: flex;
+    justify-content: flex-start;
+    object-fit: cover;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
 
-  .thumbnail {
-    cursor: pointer;
-    filter: brightness(50%);
-    transition: filter 0.3s ease;
-    border-radius: .5rem;
+    .thumbnail {
+      cursor: pointer;
+      filter: brightness(50%);
+      transition: filter 0.3s ease;
 
-    &:hover {
-      transform: scale(1.1);
-      filter: brightness(100%);
-      // border-bottom: 0.3rem solid red;
-    }
+      // show red line with image border radius
+      border-radius: 1.5rem;
+      overflow: hidden;
 
-    &.active {
-      transform: scale(1);
-      filter: brightness(100%);
-      // border-bottom: 0.5rem solid red;
-    }
+      img {
+        object-fit: cover;
+        display: block;
+        user-select: none;
+        border-radius: 1.5rem;
+      }
 
-    &:hover,
-    &.active {
-      filter: brightness(100%);
-  
-      &:before {
+      &:hover,
+      &.active {
+        filter: brightness(100%);
+
+      }
+
+      &:hover::before {
         content: '';
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 0; // Position at the bottom
-        height: 3px; // Height of the floating border
-        background-color: red; // Color of the border
-        border-radius: 0 0 0.5rem 0.5rem; // Match the border radius of the thumbnail
+        bottom: 0;
+        height: 3px;
+        background-color: red;
+        z-index: 2;
+      }
+
+      &.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 5px;
+        background-color: red;
+        z-index: 2;
+      }
+    }
+
+    .btn--leftCenter--center,
+    .btn--rightCenter--center {
+      background-color: rgba(0, 0, 0, 0.5);
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+
+      .icon {
+        border-radius: 1.5rem;
       }
     }
   }
-
-  .btn--leftCenter--center,
-  .btn--rightCenter--center {
-    background-color: rgba(0, 0, 0, 0.5);
-    // display: none;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.75);
-    }
-  }
-
-  .icon {
-    border-radius: 1.5rem;
-  }
-
-  img {
-    user-select: none;
-  }
-}
-
-.shadow {
-  box-shadow: inset 0 -10px 0 0 red;
 }

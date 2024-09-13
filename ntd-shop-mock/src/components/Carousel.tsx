@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/main.scss';
@@ -49,6 +49,13 @@ const Carousel = () => {
     } else {
       doJump(newIndex);
     }
+
+    // jumping thumbnail
+    const element = refs.current[newIndex - 1];
+    if (element) {
+      const clickImageX = element.getBoundingClientRect().left;
+      jumpThumbnail(clickImageX)
+    }
   };
 
   //////// Mobile ////////
@@ -74,6 +81,14 @@ const Carousel = () => {
         doJump(newIndex)
         setCurrentTranslate(-((newIndex) * (100 / slides.length)));
 
+        // jumping thumbnail
+        const element = refs.current[newIndex - 1];
+        if (element) {
+          const clickImageX = element.getBoundingClientRect().left;
+          jumpThumbnail(clickImageX);
+        }
+
+
         if (newIndex === 0 || newIndex === slides.length - 1) {
           // wait for translateX 300ms
           setTimeout(() => {
@@ -83,6 +98,14 @@ const Carousel = () => {
             newIndex = newIndex === 0 ? slides.length - 2 : 1
             setCurrentTranslate(-((newIndex) * (100 / slides.length)));
             setCurrentIndex(newIndex);
+
+            // jumping thumbnail
+            const element = refs.current[newIndex - 1];
+            if (element) {
+              const clickImageX = element.getBoundingClientRect().left;
+              jumpThumbnail(clickImageX);
+            }
+
             setTimeout(() => {
               setShiftWithAmin(true);
             }, 30);
@@ -110,6 +133,20 @@ const Carousel = () => {
     return index;
   }
 
+  function jumpThumbnail(X: number): void {
+    const clickImageX = X + 0.5 * thumbnailWidth * 16;
+    const clickedFirstMiddle = clickImageX / window.innerWidth;
+    // Backward, so 1 -
+    const clickedFirstMiddleFromEnd = 1 - clickImageX / window.innerWidth;
+    const threshold = 0.65
+    console.log(clickImageX)
+    if (!thumbnailFlexEnd && clickedFirstMiddle > threshold) {
+      setThumbnailFlexEnd(true)
+    } else if (thumbnailFlexEnd && clickedFirstMiddleFromEnd > threshold) {
+      setThumbnailFlexEnd(false)
+    }
+  }
+
   const isTouchDevice = (() => {
     try {
       document.createEvent('TouchEvent');
@@ -124,21 +161,32 @@ const Carousel = () => {
     : { transform: `translateX(-${currentIndex * (100 / slides.length)}%) ` };
 
   //////// thumbnail /////////
-  const thumbnailWidth = 10;
-  const thumbnailGap = 2;
-  // (Oslides num * size + gap)rem
+  const thumbnailWidth = 11;
+  const thumbnailGap = 3;
+  // rem * (Oslides num * size + gap num * size)
   const thumbnailsSize = 16 * (originalSlides.length * thumbnailWidth + (originalSlides.length - 1) * thumbnailGap);
   const [thumbnailFlexEnd, setThumbnailFlexEnd] = useState<boolean>(false);
 
+  const moveX = thumbnailsSize - window.innerWidth;
   const thumbnailStyle = thumbnailFlexEnd
     // 100vw - thumbnails width (since moving negative direction)
-    ? { transform: `translateX(${window.innerWidth - thumbnailsSize}px)` }
+    ? { transform: `translateX(${-moveX}px)` }
     : { transform: `translateX(0)` };
+
+  const thumbnailBtnStyle = thumbnailFlexEnd
+    ? { transform: `translateX(${moveX}px)` }
+    : { transform: `translateX(${-moveX}px)` };
+
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  useEffect(() => {
+    refs.current = refs.current.slice(0, originalSlides.length);
+  }, []);
 
   return (
     <div className="carousel-container">
       <div className='main-section'>
         <div className="slide-show"
+          // mobile jumping
           onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
           style={{
             ...slideShowStyle,
@@ -149,7 +197,8 @@ const Carousel = () => {
             <div style={{
               transform: `scale(${enlarge && index == currentIndex ? 1 : .85})`,
               flex: `0 0 ${100 / (slides.length)}%`
-            }} key={index} className={`slide`}>
+            }}
+              key={index} className={`slide`}>
               <img src={slide.image} alt={slide.title} />
             </div>
           ))}
@@ -158,55 +207,70 @@ const Carousel = () => {
           <>
             <div className='btn--leftCenter'>
               <div className='btn--leftCenter--center'>
-                <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => computerNavigateSlides(-1)} />
+                <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => {
+                  computerNavigateSlides(-1);
+                }} />
               </div>
             </div>
             <div className='btn--rightCenter'>
               <div className='btn--rightCenter--center'>
-                <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => computerNavigateSlides(1)} />
+                <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => {
+                  computerNavigateSlides(1)
+                }} />
               </div>
             </div>
           </>
         }
       </div>
-      <div className="thumbnails" style={{ gap: `${thumbnailGap}rem` }}>
+      <div className="thumbnails" style={{
+        gap: `${thumbnailGap}rem`,
+        width: `${thumbnailsSize}px`,
+        transition: `transform 0.3s ease`,
+        ...thumbnailStyle,
+      }}>
         {originalSlides.map((slide, index) => (
-          <img style={{
-            ...thumbnailStyle,
-            maxWidth: `${thumbnailWidth}rem`,
-            transition: `transform 0.3s ease`,
-          }} key={index} className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`} src={slide.image} alt={slide.title} onClick={(e) => {
-            if (currentIndex !== index + 1)
-              doJump(index + 1);
+          <div className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`}
+            ref={el => refs.current[index] = el}
+          >
+            <img style={{
+              width: `${thumbnailWidth}rem`,
+              height: `6rem`,
 
-            // auto shift thumbnail tab if needed. *a
-            const target = e.target as HTMLElement;
-            const threshold = 0.65;
-            // clicked image's X-axis mid point / screen width
-            const clickedFirstMiddle = (target.offsetLeft + 0.5 * thumbnailWidth * 16) / window.innerWidth;
-            // Backward, like 2 <- 1 <- 0.           ((thumbnails width - (clicked img middle point)) / screen width
-            const clickedFirstMiddleFromEnd = (thumbnailsSize - (16 * 0.5 * thumbnailWidth + target.offsetLeft)) / window.innerWidth;
-            if (!thumbnailFlexEnd && clickedFirstMiddle > threshold) {
-              setThumbnailFlexEnd(true)
-            } else if (thumbnailFlexEnd && clickedFirstMiddleFromEnd > threshold) {
-              setThumbnailFlexEnd(false)
-            }
-          }} />
+            }} key={index} src={slide.image} alt={slide.title} onClick={(e) => {
+              if (currentIndex !== index + 1)
+                doJump(index + 1);
+
+              const clickImageX = e.currentTarget.getBoundingClientRect().left;
+              jumpThumbnail(clickImageX)
+            }} />
+
+          </div>
         ))}
         {thumbnailFlexEnd ?
           <div className='btn--leftCenter'>
-            <div className='btn--leftCenter--center'>
-              <FontAwesomeIcon icon={faChevronLeft} className="icon prev" onClick={() => {
-                setThumbnailFlexEnd(false)
-              }} />
+            <div className='btn--leftCenter--center'
+              style={{
+                ...thumbnailBtnStyle
+              }}
+            >
+              <FontAwesomeIcon
+
+                icon={faChevronLeft} className="icon prev" onClick={() => {
+                  setThumbnailFlexEnd(false)
+                }} />
             </div>
           </div>
           :
           <div className='btn--rightCenter'>
-            <div className='btn--rightCenter--center'>
-              <FontAwesomeIcon icon={faChevronRight} className="icon next" onClick={() => {
-                setThumbnailFlexEnd(true)
-              }} />
+            <div className='btn--rightCenter--center'
+              style={{
+                ...thumbnailBtnStyle
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faChevronRight} className="icon next" onClick={() => {
+                  setThumbnailFlexEnd(true)
+                }} />
             </div>
           </div>
         }
