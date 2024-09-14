@@ -3,23 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import '../styles/main.scss';
 import '../styles/carousel.scss';
-interface SlideProps {
-  image: string;
-  title: string;
-}
-
-interface CarouselThumbnailsProps {
-  thumbnailGap: number;
-  setThumbnailGap: React.Dispatch<React.SetStateAction<number>>;
-  doJump: (newIndex: number) => void;
-  thumbnailFlexEnd: boolean;
-  setThumbnailFlexEnd: React.Dispatch<React.SetStateAction<boolean>>;
-  thumbnailWidth: number;
-  setThumbnailWidth: React.Dispatch<React.SetStateAction<number>>;
-  originalSlides: SlideProps[];
-  currentIndex: number;
-  refs: React.MutableRefObject<(HTMLDivElement | null)[]>;
-}
+import { CarouselThumbnailsProps } from '../types/carousel.types';
 
 const CarouselThumbnails = ({ thumbnailGap, setThumbnailGap, doJump, thumbnailFlexEnd, setThumbnailFlexEnd, thumbnailWidth, setThumbnailWidth, originalSlides, currentIndex, refs }: CarouselThumbnailsProps) => {
 
