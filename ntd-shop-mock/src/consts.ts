@@ -1,5 +1,5 @@
 import { SlideProps } from "./types/carousel.types";
-import { CertifiedProps, IconProps, MidSectionProps } from "./types/footer.types";
+import { CertifiedProps, IconProps, MidSectionProps, FooterRow } from "./types/footer.types";
 
 export const originalSlides: SlideProps[] = [
   { image: "/src/assets/image0.avif", title: "Image 0" },
@@ -18,9 +18,6 @@ export const footerTopIcons: IconProps[] = [
   { image: "/src/assets/footer3-x.png", title: "x" },
   { image: "/src/assets/footer4-ytb.png", title: "yub" }
 ];
-
-
-
 
 export const footerMidSections: MidSectionProps[] = [
   {
@@ -86,6 +83,14 @@ export const footerMidSections: MidSectionProps[] = [
 
 export const Certified: CertifiedProps = {
   title: "ESRB Certified Icon",
-  link: "https://www.esrb.org/EPCConfirm/891/", 
+  link: "https://www.esrb.org/EPCConfirm/891/",
   image: "/src/assets/Certified.png"
 }
+
+export const footerBottomRow: FooterRow[] = [
+  { title: "Contact us", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
+  { title: "Website feedback", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
+  { title: "Terms of Use", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
+  { title: "Documents & Policies", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" }
+]
+

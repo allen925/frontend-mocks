@@ -13,3 +13,8 @@ export interface CertifiedProps {
   link: string;
   image: string;
 }
+
+export interface FooterRow {
+  title: string;
+  link: string;
+}
