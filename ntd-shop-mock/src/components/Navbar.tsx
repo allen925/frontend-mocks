@@ -1,3 +1,6 @@
+import '../styles/main.scss';
+import '../styles/navbar.scss';
+
 const Navbar = () => {
   return (
     <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f8f9fa' }}>

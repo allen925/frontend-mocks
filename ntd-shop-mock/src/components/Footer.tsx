@@ -4,7 +4,6 @@ import { footerTopIcons, footerMidSections, Certified, footerBottomRow } from '.
 import USA from "/src/assets/USAIcon.webp";
 
 const Footer = () => {
-  console.log(USA)
   return (
     <footer className='footer'>
       <div className='footer-top-container'>
