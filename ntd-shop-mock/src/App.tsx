@@ -6,7 +6,6 @@ import './styles/main.scss'; // Import your main styles
 function App() {
   return (
     <>
-
       <header>
         {/* <Navbar /> */}
       </header>
