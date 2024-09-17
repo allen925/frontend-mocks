@@ -16,8 +16,3 @@ export interface CarouselThumbnailsProps {
   refs: React.MutableRefObject<(HTMLDivElement | null)[]>;
 }
 
-
-export interface NavSearch {
-  className: string;
-  setIsSearchExpand: React.Dispatch<React.SetStateAction<boolean>>;
-}

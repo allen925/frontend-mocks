@@ -1,5 +1,6 @@
 import { SlideProps } from "./types/carousel.types";
-import { CertifiedProps, IconProps, MidSectionProps, FooterRow, NavSearchDrop } from "./types/footer.types";
+import { CertifiedProps, IconProps, MidSectionProps, FooterRow } from "./types/footer.types";
+import { NavSearchCategories, NavSearchDropProduct, NavSearchDropTopic } from "./types/nav.types";
 
 export const originalSlides: SlideProps[] = [
   { image: "/src/assets/image0.avif", title: "Image 0" },
@@ -94,11 +95,27 @@ export const footerBottomRow: FooterRow[] = [
   { title: "Documents & Policies", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" }
 ]
 
-export const navSearchDrop: NavSearchDrop[] = [
-  { title: "All categories"},
-  { title: "Games"},
-  { title: "Hardware"},
-  { title: "Merchandise"},
-  { title: "News & Events"},
-  { title: "Support"},
+export const navSearchCategories: NavSearchCategories[] = [
+  { title: "All categories" },
+  { title: "Games" },
+  { title: "Hardware" },
+  { title: "Merchandise" },
+  { title: "News & Events" },
+  { title: "Support" },
+]
+
+
+export const navSearchDropTopics: NavSearchDropTopic[] = [
+  { title: "Nintendo Switch™ - OLED Model: Mario Red Edition", link: "" },
+  { title: "Nintendo Switch", link: "" },
+  { title: "Super Mario Bros. Wonder", link: "" },
+  { title: "Nintendo Switch games", link: "" },
+  { title: "Zelda games", link: "" },
+]
+
+export const navSearchDropProducts: NavSearchDropProduct[] = [
+  { title: "Nintendo Switch™ - OLED Model - Mario Red Edition", type: "Hardware", link: "", image: "" },
+  { title: "Super Mario Bros.™ Wonder", type: "Nintendo Switch", link: "", image: "" },
+  { title: "Super Mario RPG™", type: "Nintendo Switch", link: "", image: "" },
+  { title: "WarioWare™: Move It!", type: "Nintendo Switch", link: "", image: "" },
 ]

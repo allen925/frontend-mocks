@@ -18,7 +18,3 @@ export interface FooterRow {
   title: string;
   link: string;
 }
-
-export interface NavSearchDrop {
-  title: string;
-}

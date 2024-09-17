@@ -6,6 +6,7 @@ import { faCartShopping, faCircleQuestion, faHeart, faUser } from '@fortawesome/
 import USA from "/src/assets/USAIcon.webp";
 import NavbarSearchBar from './NavbarSearchBar';
 import { useState } from 'react';
+import NavbarSearchDrop from './NavbarSearchDrop';
 
 const Navbar = () => {
   const [isSearchExpand, setIsSearchExpand] = useState<boolean>(false);
@@ -52,6 +53,7 @@ const Navbar = () => {
       <div className='nav-mid-container'>
         {isSearchExpand && <h1>111</h1>}
       </div>
+      <NavbarSearchDrop className={"nav-search-drop-container"}/>
     </nav>
   );
 };

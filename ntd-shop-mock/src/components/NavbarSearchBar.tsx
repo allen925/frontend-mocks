@@ -3,11 +3,11 @@ import '../styles/navbar.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { NavSearch } from '../types/carousel.types';
-import { navSearchDrop } from '../consts';
+import { navSearchCategories } from '../consts';
 import { useEffect, useRef, useState } from 'react';
+import { NavSearchProps } from '../types/nav.types';
 
-const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearch) => {
+const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearchProps) => {
   const [isDropdownExpand, setIsDropdownExpand] = useState<boolean>(false);
   const [category, setCategory] = useState('All categories');
 
@@ -46,7 +46,7 @@ const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearch) => {
         <FontAwesomeIcon icon={faChevronDown} className={`${isDropdownExpand ? 'rotate' : ''}`} />
         {isDropdownExpand &&
           <div className='dropdown-menu' >
-            {navSearchDrop.map((item, index) => (
+            {navSearchCategories.map((item, index) => (
               <div key={index} onClick={() => setCategory(item.title)}>
                 {item.title}
               </div>
