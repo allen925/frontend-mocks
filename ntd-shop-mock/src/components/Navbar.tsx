@@ -1,13 +1,56 @@
 import '../styles/main.scss';
 import '../styles/navbar.scss';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping, faCircleQuestion, faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
+import USA from "/src/assets/USAIcon.webp";
+import NavbarSearchBar from './NavbarSearchBar';
+import { useState } from 'react';
+
 const Navbar = () => {
+  const [isSearchExpand, setIsSearchExpand] = useState<boolean>(false);
+
   return (
-    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: '#f8f9fa' }}>
-      <a href="/">Home</a>
-      <div>
-        <a href="/about">About</a>
-        <a href="/contact" style={{ marginLeft: '20px' }}>Contact</a>
+    <nav className='nav'>
+      <div className='nav-top-container'>
+        <a href="/" className='home'>
+          <img src='/src/assets/nav-ntd.svg' alt='ntd icon' width='69' />
+        </a>
+        <NavbarSearchBar className={"content"} setIsSearchExpand={setIsSearchExpand}/>
+        <div className='content'>
+          <a href="">
+            <FontAwesomeIcon icon={faCircleQuestion} />
+            <span>
+              Support
+            </span>
+          </a>
+          <a href="">
+            <FontAwesomeIcon icon={faHeart} />
+            <span>
+              Wish List
+            </span>
+          </a>
+          <a href="">
+            <FontAwesomeIcon icon={faCartShopping} />
+            <span>
+              Cart
+            </span>
+          </a>
+          <a href="">
+            <FontAwesomeIcon icon={faUser} />
+            <span>
+              Log in / Sign Up
+            </span>
+          </a>
+        </div>
+        <div className='content'>
+          <a href="https://www.nintendo.com/us/store/products/stardew-valley-switch/">
+            <img src={USA} className='icon' />
+          </a>
+        </div>
+      </div>
+      <div className='nav-mid-container'>
+        {isSearchExpand && <h1>111</h1>}
       </div>
     </nav>
   );

@@ -1,5 +1,5 @@
 import { SlideProps } from "./types/carousel.types";
-import { CertifiedProps, IconProps, MidSectionProps, FooterRow } from "./types/footer.types";
+import { CertifiedProps, IconProps, MidSectionProps, FooterRow, NavSearchDrop } from "./types/footer.types";
 
 export const originalSlides: SlideProps[] = [
   { image: "/src/assets/image0.avif", title: "Image 0" },
@@ -12,11 +12,11 @@ export const originalSlides: SlideProps[] = [
 ];
 
 export const footerTopIcons: IconProps[] = [
-  { image: "/src/assets/footer0-ntd.png", title: "ntd" },
-  { image: "/src/assets/footer1-fb.png", title: "fb" },
-  { image: "/src/assets/footer2-ig.png", title: "ig" },
-  { image: "/src/assets/footer3-x.png", title: "x" },
-  { image: "/src/assets/footer4-ytb.png", title: "yub" }
+  { image: "/src/assets/footer0-ntd.svg", title: "ntd" },
+  { image: "/src/assets/footer1-fb.svg", title: "fb" },
+  { image: "/src/assets/footer2-ig.svg", title: "ig" },
+  { image: "/src/assets/footer3-x.svg", title: "x" },
+  { image: "/src/assets/footer4-ytb.svg", title: "yub" }
 ];
 
 export const footerMidSections: MidSectionProps[] = [
@@ -84,7 +84,7 @@ export const footerMidSections: MidSectionProps[] = [
 export const Certified: CertifiedProps = {
   title: "ESRB Certified Icon",
   link: "https://www.esrb.org/EPCConfirm/891/",
-  image: "/src/assets/Certified.png"
+  image: "/src/assets/Certified.svg"
 }
 
 export const footerBottomRow: FooterRow[] = [
@@ -94,3 +94,11 @@ export const footerBottomRow: FooterRow[] = [
   { title: "Documents & Policies", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" }
 ]
 
+export const navSearchDrop: NavSearchDrop[] = [
+  { title: "All categories"},
+  { title: "Games"},
+  { title: "Hardware"},
+  { title: "Merchandise"},
+  { title: "News & Events"},
+  { title: "Support"},
+]

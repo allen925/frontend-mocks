@@ -8,6 +8,8 @@ import { originalSlides } from '../consts';
 
 
 const isMultiImage = originalSlides.length > 1;
+// if image more than 1, clone the first and last image for smooth switching of images. 
+// [Last, 1, 2, 3, 4, ... , First]
 const slides = isMultiImage ? [originalSlides[originalSlides.length - 1], ...originalSlides, originalSlides[0]] : originalSlides;
 
 const Carousel = () => {
