@@ -1,10 +1,15 @@
 export interface NavSearchProps {
   className: string;
-  setIsSearchExpand: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSearchExpand?: React.Dispatch<React.SetStateAction<boolean>>;
+  input?: boolean; 
 }
 
 export interface NavSearchDropProps {
   className: string;
+}
+
+export interface CardProps {
+  product: NavSearchDropProduct;
 }
 
 export interface NavSearchCategories {

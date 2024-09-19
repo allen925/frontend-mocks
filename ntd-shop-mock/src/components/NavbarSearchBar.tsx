@@ -7,7 +7,7 @@ import { navSearchCategories } from '../consts';
 import { useEffect, useRef, useState } from 'react';
 import { NavSearchProps } from '../types/nav.types';
 
-const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearchProps) => {
+const NavbarSearchBar = ({ className, setIsSearchExpand, input }: NavSearchProps) => {
   const [isDropdownExpand, setIsDropdownExpand] = useState<boolean>(false);
   const [category, setCategory] = useState('All categories');
 
@@ -32,12 +32,16 @@ const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearchProps) => {
   }, [isDropdownExpand]);
 
   return (
-    <div className={className + ' search-bar'} onClick={() => setIsSearchExpand(true)}>
+    <form className={className + ' search-bar'} onClick={() => setIsSearchExpand && setIsSearchExpand(true)}>
       <div className='search'>
         <FontAwesomeIcon icon={faMagnifyingGlass} />
-        <span>
-          Search
-        </span>
+        {input ?
+          <input placeholder='Search'></input>
+          :
+          <span>
+            Search
+          </span>
+        }
       </div>
       <div className={` dropdown-select`} ref={popupRef} onClick={() => setIsDropdownExpand(prev => !prev)}>
         <span>
@@ -54,7 +58,7 @@ const NavbarSearchBar = ({ className, setIsSearchExpand}: NavSearchProps) => {
           </div>
         }
       </div>
-    </div>
+    </form>
   );
 };
 

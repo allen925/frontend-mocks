@@ -1,28 +1,47 @@
 import '../styles/main.scss';
 import '../styles/navbar.scss';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useRef, useState } from 'react';
 import { NavSearchDropProps } from '../types/nav.types';
 import { navSearchDropProducts, navSearchDropTopics } from '../consts';
+import NavbarSearchBar from './NavbarSearchBar';
+import Card from './Card';
 
 const NavbarSearchDrop = ({ className }: NavSearchDropProps) => {
 
   return (
-    <div className={className}>
-      {navSearchDropTopics.map((topic, index) => (
-        <div key={index}>
-          {topic.title}
-        </div>
-      ))}
+    <>
 
-      {navSearchDropProducts.map((product, index) => (
-        <div key={index}>
-          {product.title}
+      <div className='nav-top-container'>
+        <a href="/" className='home'>
+          <img src='/src/assets/nav-ntd.svg' alt='ntd icon' width='69' />
+        </a>
+        <NavbarSearchBar className={"content"} input={true} />
+      </div>
+
+      <div className={className}>
+        <div className='trend'>
+          <span>
+            Trending topics
+          </span>
+          {navSearchDropTopics.map((topic, index) => (
+            <div key={index}>
+              {topic.title}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+
+        <div className='products'>
+          <span>
+            Top Store Products
+          </span>
+          <div className='cards'>
+            {navSearchDropProducts.map((product, index) => (
+              <Card product={product} key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -7,18 +7,19 @@ import USA from "/src/assets/USAIcon.webp";
 import NavbarSearchBar from './NavbarSearchBar';
 import { useState } from 'react';
 import NavbarSearchDrop from './NavbarSearchDrop';
+import HeartIcon from './HeartIcon';
 
 const Navbar = () => {
   const [isSearchExpand, setIsSearchExpand] = useState<boolean>(false);
 
   return (
     <nav className='nav'>
-      <div className='nav-top-container'>
+      {/* <div className='nav-top-container'>
         <a href="/" className='home'>
           <img src='/src/assets/nav-ntd.svg' alt='ntd icon' width='69' />
         </a>
         <NavbarSearchBar className={"content"} setIsSearchExpand={setIsSearchExpand}/>
-        <div className='content'>
+        <div className='content nav-items'>
           <a href="">
             <FontAwesomeIcon icon={faCircleQuestion} />
             <span>
@@ -51,9 +52,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className='nav-mid-container'>
-        {isSearchExpand && <h1>111</h1>}
-      </div>
-      <NavbarSearchDrop className={"nav-search-drop-container"}/>
+      </div> */}
+      <NavbarSearchDrop className={"nav-search-drop-container"} />
     </nav>
   );
 };
