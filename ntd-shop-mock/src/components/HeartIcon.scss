@@ -44,19 +44,19 @@
 
       @keyframes spin-#{$i} {
         0% {
-          transform: rotate($i * 45deg) translateY(-100%) scaleY(0);
+          transform: rotate($i * 45deg) translateY(var(--translate-y-from)) scaleY(0);
         }
 
         40% {
-          transform: rotate($i * 45deg) translateY(-100%) scaleY(0.5);
+          transform: rotate($i * 45deg) translateY(var(--translate-y-from)) scaleY(var(--scale-y));
         }
 
         60% {
-          transform: rotate($i * 45deg) translateY(-100%) scaleY(0.5);
+          transform: rotate($i * 45deg) translateY(var(--translate-y-from)) scaleY(var(--scale-y));
         }
 
         100% {
-          transform: rotate($i * 45deg) translateY(-150%) scaleY(0);
+          transform: rotate($i * 45deg) translateY(var(--translate-y-to)) scaleY(0);
         }
       }
     }
