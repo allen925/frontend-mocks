@@ -16,11 +16,11 @@ const Footer = () => {
       <div className='footer-mid-container'>
         {footerMidSections.map((section, index) => (
           <div key={index} className={`footer-section ${index < 4 ? 'span-two' : ''}`}>
-            <h2 className="footer-section-header">
+            <span className="footer-section-header">
               <a href="https://www.nintendo.com/us/store/products/stardew-valley-switch/">
                 {section.header}
               </a>
-            </h2>
+            </span>
             <ul>
               {section.links.map((link, index) => (
                 <li key={index}>
@@ -62,7 +62,9 @@ const Footer = () => {
             <img src={USA} className='icon' />
           </a>
           <a href="https://www.nintendo.com/us/store/products/stardew-valley-switch/" className='local'>
-            English (United States)
+            <span>
+              English (United States)
+            </span>
           </a>
         </div>
       </div>

@@ -89,10 +89,9 @@ export const Certified: CertifiedProps = {
 }
 
 export const footerBottomRow: FooterRow[] = [
-  { title: "Contact us", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
-  { title: "Website feedback", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
-  { title: "Terms of Use", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" },
-  { title: "Documents & Policies", link: "https://www.nintendo.com/us/store/products/stardew-valley-switch/" }
+  { title: "Contact us", link: "" },
+  { title: "Website feedback", link: "" },
+  { title: "Terms of Use", link: "" },
 ]
 
 export const navSearchCategories: NavSearchCategories[] = [

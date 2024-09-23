@@ -10,10 +10,10 @@ function App() {
         <Navbar />
       </nav>
       <main style={{ display: "flex", justifyContent: "center" }}>
-        {/* <Carousel /> */}
+        <Carousel />
       </main>
       <footer>
-        {/* <Footer /> */}
+        <Footer />
       </footer>
     </>
   )
