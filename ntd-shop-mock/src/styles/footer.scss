@@ -127,10 +127,11 @@
   }
 }
 
-a {
+a:not(.certified a) {
   text-decoration: none;
   color: #484848;
   transition: 0.1s;
+  display: inline-block;
 
   &:after {
     display: block;
@@ -184,7 +185,7 @@ a {
   }
 
   a {
-    color: white;
+    color: white !important;
   }
 
   span {
