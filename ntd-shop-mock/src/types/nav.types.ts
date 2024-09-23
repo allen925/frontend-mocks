@@ -6,6 +6,8 @@ export interface NavSearchProps {
 
 export interface NavSearchDropProps {
   className: string;
+  isSearchExpand?: boolean;
+  onAnimationEnd: () => void;
 }
 
 export interface CardProps {

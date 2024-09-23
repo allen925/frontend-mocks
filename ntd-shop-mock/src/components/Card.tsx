@@ -16,7 +16,7 @@ const Card = ({ product }: CardProps) => {
           <span>
             {product.type}
           </span>
-          <HeartIcon containerSize='38' heartSize='18' beamSize='1.2' translateYFrom='-70%' translateYTo='-100%' scaleY='.3'/>
+          <HeartIcon containerSize='34' heartSize='18' beamSize='1.2' translateYFrom='-70%' translateYTo='-100%' scaleY='.3'/>
         </div>
       </div>
     </div>

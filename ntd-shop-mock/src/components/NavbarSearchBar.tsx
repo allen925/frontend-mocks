@@ -6,10 +6,12 @@ import { faChevronDown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-ic
 import { navSearchCategories } from '../consts';
 import { useEffect, useRef, useState } from 'react';
 import { NavSearchProps } from '../types/nav.types';
+import usePreventDoubleClickSelect from '../hooks/usePreventDoubleClickSelect';
 
 const NavbarSearchBar = ({ className, setIsSearchExpand, input }: NavSearchProps) => {
   const [isDropdownExpand, setIsDropdownExpand] = useState<boolean>(false);
   const [category, setCategory] = useState('All categories');
+  usePreventDoubleClickSelect(['.prevent-double-click-select']);
 
   const popupRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -36,14 +38,17 @@ const NavbarSearchBar = ({ className, setIsSearchExpand, input }: NavSearchProps
       <div className='search'>
         <FontAwesomeIcon icon={faMagnifyingGlass} />
         {input ?
-          <input placeholder='Search'></input>
+          <input autoFocus={true} placeholder='Search'></input>
           :
-          <span>
+          <span className='prevent-double-click-select'>
             Search
           </span>
         }
       </div>
-      <div className={` dropdown-select`} ref={popupRef} onClick={() => setIsDropdownExpand(prev => !prev)}>
+      <div className={` dropdown-select ${isDropdownExpand ? 'active' : ''}`} ref={popupRef} onClick={(e) => {
+        e.stopPropagation();
+        setIsDropdownExpand((prev) => !prev);
+      }}>
         <span>
           {category}
         </span>
