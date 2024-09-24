@@ -43,48 +43,45 @@ const CarouselThumbnails = ({ thumbnailGap, setThumbnailGap, doJump, thumbnailFl
     ? { transform: `translateX(${-moveX}px)` }
     : { transform: `translateX(0)` };
 
-  const thumbnailBtnShift = thumbnailFlexEnd
-    ? { transform: `translateX(${moveX}px)` }
-    : { transform: `translateX(${-moveX}px)` };
-
   return (
-    <div className="thumbnails" style={{
-      gap: `${thumbnailGap}rem`,
-      width: `${thumbnailsSize}px`,
-      ...thumbnailsShift,
-    }}>
-      {originalSlides.map((slide, index) => (
-        <div className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`}
-          ref={el => refs.current[index] = el} key={index}
-        >
-          <img style={{
-            width: `${thumbnailWidth}rem`,
-          }} src={slide.image} alt={slide.title} onClick={(e) => {
-            if (currentIndex !== index + 1)
-              doJump(index + 1);
+    <div className="thumbnails-container">
 
-            const clickImageX = e.currentTarget.getBoundingClientRect().left;
-            jumpThumbnail(clickImageX)
-          }} />
-        </div>
-      ))}
+      <div className="thumbnails" style={{
+        gap: `${thumbnailGap}rem`,
+        width: `${thumbnailsSize}px`,
+        ...thumbnailsShift,
+      }}>
+        {originalSlides.map((slide, index) => (
+          <div className={`thumbnail ${index + 1 === currentIndex ? 'active' : ''}`}
+            ref={el => refs.current[index] = el} key={index}
+          >
+            <img style={{
+              width: `${thumbnailWidth}rem`,
+            }} src={slide.image} alt={slide.title} onClick={(e) => {
+              if (currentIndex !== index + 1)
+                doJump(index + 1);
+
+              const clickImageX = e.currentTarget.getBoundingClientRect().left;
+              jumpThumbnail(clickImageX)
+            }} />
+          </div>
+        ))}
+      </div>
       {thumbnailsSize > window.innerWidth && (thumbnailFlexEnd ?
         <div className='btn--left'>
-          <FontAwesomeIcon
-            icon={faChevronLeft} className="icon" onClick={() => setThumbnailFlexEnd(false)}
-            style={{
-              ...thumbnailBtnShift
-            }}
-          />
+          <div className='icon-wrap'>
+            <FontAwesomeIcon
+              icon={faChevronLeft} className="icon" onClick={() => setThumbnailFlexEnd(false)}
+            />
+          </div>
         </div>
         :
         <div className='btn--right'>
-          <FontAwesomeIcon
-            icon={faChevronRight} className="icon" onClick={() => setThumbnailFlexEnd(true)}
-            style={{
-              ...thumbnailBtnShift
-            }}
-          />
+          <div className='icon-wrap'>
+            <FontAwesomeIcon
+              icon={faChevronRight} className="icon" onClick={() => setThumbnailFlexEnd(true)}
+            />
+          </div>
         </div>
       )}
     </div>

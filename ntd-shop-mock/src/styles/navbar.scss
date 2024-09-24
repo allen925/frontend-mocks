@@ -355,7 +355,10 @@ nav {
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
 
   .panel{
-    background-color: aqua;
+    display: flex;
+    
+    background-color: white;
+    border-radius: 100px;
     height: 58px;
   }
 }
