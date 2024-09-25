@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import '../styles/main.scss';
-import '../styles/carousel.scss';
 import { CarouselThumbnailsProps } from '../types/carousel.types';
 
 const CarouselThumbnails = ({ thumbnailGap, setThumbnailGap, doJump, thumbnailFlexEnd, setThumbnailFlexEnd, thumbnailWidth, setThumbnailWidth, originalSlides, currentIndex, refs }: CarouselThumbnailsProps) => {

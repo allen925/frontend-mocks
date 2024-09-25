@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './HeartIcon.scss'; // Ensure the SCSS file is linked correctly
+import '../styles/HeartIcon.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { HeartIconProps } from '../types/heartIcon.types';

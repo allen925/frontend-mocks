@@ -1,6 +1,3 @@
-import '../styles/main.scss';
-import '../styles/navbar.scss';
-
 import { NavSearchDropProps } from '../types/nav.types';
 import { navSearchDropProducts, navSearchDropTopics } from '../consts';
 import Card from './Card';
@@ -77,7 +74,6 @@ const NavbarSearchDrop = ({ className, isSearchExpand, onAnimationEnd }: NavSear
 
 
   return (
-
     <div className={`${className} ${widthMode == 0 ? 'expanded' : ''}`} ref={containerRef}>
       <div className='trend' ref={trendRef}>
         <span>

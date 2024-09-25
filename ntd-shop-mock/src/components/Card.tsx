@@ -1,5 +1,3 @@
-import '../styles/main.scss';
-import '../styles/navbar.scss';
 import { CardProps } from '../types/nav.types';
 import HeartIcon from './HeartIcon';
 

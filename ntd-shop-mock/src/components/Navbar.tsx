@@ -1,4 +1,3 @@
-import '../styles/main.scss';
 import '../styles/navbar.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,7 +39,7 @@ const Navbar = () => {
   const widthMode = useResponsiveMode();
 
   return (
-    <nav className='nav'>
+    <nav>
       {!(isSearchExpand) && (
         [0, 1].includes(widthMode) ?
           <div className='nav-top-container'>

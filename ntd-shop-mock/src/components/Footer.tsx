@@ -1,4 +1,3 @@
-import '../styles/main.scss';
 import '../styles/footer.scss';
 import { footerTopIcons, footerMidSections, Certified, footerBottomRow } from '../consts';
 import USA from "/src/assets/USAIcon.webp";
